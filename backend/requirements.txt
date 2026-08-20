@@ -1,0 +1,14 @@
+# Recall AI 后端依赖
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+pydantic==2.7.4
+pydantic-settings==2.4.0
+python-multipart==0.0.9
+httpx==0.27.0
+reportlab==4.2.2
+chromadb==0.5.3
+# 大模型 API（DeepSeek，OpenAI 兼容）
+openai==1.40.0
+# OCR（PaddleOCR-VL，可选，缺失时上传接口返回友好提示）
+# paddlepaddle 与 paddleocr 体积较大，按需安装：
+# paddleocr==2.7.3
