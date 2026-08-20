@@ -48,6 +48,52 @@ Recall 是一款面向学生（中学 / 大学 / 考研）的 AI 错题管理平
 
 ---
 
+## 🚀 快速开始（30 秒跑起来）
+
+Recall 有两种运行方式，任选其一：
+
+| 方式 | 适合场景 | 启动命令 | 访问地址 |
+|---|---|---|---|
+| **打包模式（推荐 / 最省心）** | 看界面、演示、交付 | 仅启动后端（需先 `npm run build` 生成 `frontend/dist/`） | `http://localhost:8000/` |
+| **开发模式** | 改代码、二次开发 | 后端 + 前端各起一个进程 | 前端 `http://localhost:5173/`（自动代理 `/api` 到 8000） |
+
+> **当前状态**：本项目已在你本机以「打包模式」运行，直接打开 **http://localhost:8000/** 即可看到页面，错题数据也都还在，**无需再次启动**。
+
+> **为什么一个后端就够？** 后端启动时会自动检查 `frontend/dist/` 是否存在：存在就把它托管在 `/`，不存在则仅提供 API。所以「打包模式」只需一个端口、一条命令。
+
+### 📁 项目目录结构
+
+```
+recall/
+├── backend/                 # FastAPI 后端
+│   ├── app/
+│   │   ├── main.py          # 入口：含 frontend/dist 静态托管与 SPA fallback
+│   │   ├── routers/         # 错题/对话/看板/设置/上传/帮助 六个路由
+│   │   ├── llm_client.py    # 大模型封装（chat / solve / 视觉 OCR）
+│   │   ├── ocr_client.py    # OCR：视觉模型优先，降级本地 PaddleOCR-VL
+│   │   ├── chroma_client.py # 向量库（解耦，缺失时静默跳过）
+│   │   ├── pdf_export.py    # PDF 导出（KaTeX + 浏览器无头打印，失败回退 reportlab）
+│   │   ├── database.py      # SQLite 初始化与种子数据
+│   │   ├── schemas.py       # Pydantic 数据模型
+│   │   └── config.py        # .env 配置加载
+│   ├── data/                # SQLite / ChromaDB（git 忽略，含你的错题）
+│   ├── requirements.txt
+│   └── .env.example         # 配置模板（复制为 .env 后填 Key）
+├── frontend/                # Vue 3 + Vite + TS + Tailwind + KaTeX
+│   ├── src/
+│   │   ├── views/           # 5 个页面（列表 / 详情 / 复习 / 看板 / 设置）
+│   │   ├── components/      # 13 个组件（含 MathText 公式渲染）
+│   │   ├── api/             # 后端接口封装
+│   │   └── types/          # TypeScript 类型定义
+│   └── dist/                # 构建产物（打包模式由后端托管，git 忽略）
+├── docs/                    # PRD / 开发文档 / 系统测试报告
+├── start.bat / start.sh     # 一键启动脚本（打包模式）
+├── LICENSE                  # MIT
+└── README.md
+```
+
+---
+
 ## 🚀 安装步骤
 
 > 环境要求：Node.js 18+（前端）、Python 3.12+（后端，推荐 3.13）。
@@ -96,6 +142,8 @@ npm run dev
 前端默认运行在 `http://localhost:5173`，开发模式下已配置 `/api` 代理到 `http://localhost:8000`，无需额外跨域配置。
 
 ## 📦 打包版运行（无需 npm run dev）
+
+> 注意：本 Git 仓库是**源码版**，`frontend/dist/` 不入库（构建产物，体积大且可重建）。若你想用打包模式运行仓库源码，需先 `cd frontend && npm install && npm run build` 生成 `dist/`；若你拿到的是「完整版 zip」（已含 `dist/`），则可跳过 build 直接启动。
 
 如果你拿到的是**已包含 `frontend/dist/` 的压缩包**，只需启动后端即可同时访问前端页面：
 
