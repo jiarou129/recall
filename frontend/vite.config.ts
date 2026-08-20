@@ -11,6 +11,7 @@ export default defineConfig({
     },
   },
   server: {
+    host: true, // 绑定 0.0.0.0，避免仅监听 IPv6 [::1] 导致部分环境/预览面板无法访问
     port: 5173,
     proxy: {
       // 开发期将 /api 代理到 FastAPI 后端（后端路由本身带 /api 前缀，直接透传）
