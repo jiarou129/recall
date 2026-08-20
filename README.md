@@ -44,6 +44,7 @@ Recall 是一款面向学生（中学 / 大学 / 考研）的 AI 错题管理平
 | [`README.md`](./README.md) | 使用者 | 安装、配置、使用、贡献指引 |
 | [`docs/PRD.md`](./docs/PRD.md) | 产品/决策 | 产品背景、用户画像、功能流程、需求规格 |
 | [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md) | 开发者 | 架构、API 契约、数据模型、关键模块设计、扩展指南 |
+| [`docs/TEST_REPORT.md`](./docs/TEST_REPORT.md) | 测试/质量 | 功能/非功能测试用例、真实质量门禁结果、缺陷与结论 |
 
 ---
 
@@ -94,13 +95,36 @@ npm run dev
 
 前端默认运行在 `http://localhost:5173`，开发模式下已配置 `/api` 代理到 `http://localhost:8000`，无需额外跨域配置。
 
-### 4. 生产构建（可选）
+## 📦 打包版运行（无需 npm run dev）
+
+如果你拿到的是**已包含 `frontend/dist/` 的压缩包**，只需启动后端即可同时访问前端页面：
+
+```bash
+cd recall
+
+# 前提：backend/.venv 已创建、依赖已安装、backend/.env 已配置
+
+# Windows 直接双击
+start.bat
+
+# macOS / Linux
+chmod +x start.sh
+./start.sh
+```
+
+然后浏览器访问 `http://localhost:8000/`。
+
+原理：`frontend/dist/` 构建完成后，FastAPI 会自动把它托管在 `/`；所有 API 仍走 `/api/*`。因此一个端口 `8000` 就能同时 serving 前端和后端，部署/演示更简单。
+
+### 生产构建（可选）
 
 ```bash
 cd frontend
 npm run build      # 产物输出到 dist/
 npm run preview    # 本地预览构建结果
 ```
+
+构建产物在 `frontend/dist/`，后端启动后会自动托管。
 
 ---
 
@@ -199,9 +223,7 @@ list.forEach((m) => console.log(m.question, m.subject))
 
 ## 📄 许可证信息
 
-本项目**暂未声明许可证（LICENSE）**。在明确许可证之前，默认保留所有权利，未经授权请勿用于商业目的。
-
-我们计划采用 **MIT License**（宽松、允许商业与再分发）。如你希望参与并确定许可证，请提 Issue 或 PR 添加 `LICENSE` 文件。
+本项目采用 **MIT License**。详见仓库根目录 [`LICENSE`](./LICENSE) 文件。
 
 ---
 
