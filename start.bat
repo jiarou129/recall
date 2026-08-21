@@ -34,7 +34,7 @@ if not defined PY (
 echo [1/5] Python：%PY%
 
 REM ---------- 2. 后端虚拟环境 ----------
-cd /d "%~dp0backend"
+cd /d "%~dp0\backend"
 if not exist ".venv\Scripts\python.exe" (
   echo [2/5] 首次运行：创建 Python 虚拟环境...
   %PY% -m venv .venv
@@ -82,7 +82,7 @@ if not exist "frontend\dist\index.html" (
     pause
     exit /b 1
   )
-  cd /d "%~dp0frontend"
+  cd /d "%~dp0\frontend"
   echo        安装前端依赖（约 1-3 分钟）...
   call npm install
   if errorlevel 1 (
@@ -123,7 +123,7 @@ if not errorlevel 1 (
 )
 
 REM ---------- 启动后端（新窗口：托管前端页面 + API） ----------
-cd /d "%~dp0backend"
+cd /d "%~dp0\backend"
 start "Recall Backend" cmd /k ".venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
 cd /d "%~dp0"
 
