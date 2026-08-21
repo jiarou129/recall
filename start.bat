@@ -1,6 +1,7 @@
 ﻿@echo off
 chcp 65001 >nul
 setlocal enabledelayedexpansion
+set "PYTHONUTF8=1"
 title Recall AI 错题本 - 一键启动
 echo [DIAG] Script directory: %~dp0
 echo [HINT] If path contains Temp or zip.XXX/, the path is too long.
