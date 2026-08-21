@@ -2,6 +2,10 @@
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 title Recall AI 错题本 - 一键启动
+echo [DIAG] Script directory: %~dp0
+echo [HINT] If path contains Temp or zip.XXX/, the path is too long.
+echo        Extract the zip to a SHORT path first (e.g. D://Recall), then double-click start.bat.
+echo.
 cd /d "%~dp0"
 
 REM ============================================================
