@@ -151,15 +151,17 @@ npm run dev
 ```bash
 cd recall
 
-# 前提：backend/.venv 已创建、依赖已安装、backend/.env 已配置
-
-# Windows 直接双击
+# Windows：直接双击
 start.bat
 
 # macOS / Linux
 chmod +x start.sh
 ./start.sh
 ```
+
+**脚本是全自动引导的**：首次运行会自动检查 Python → 创建虚拟环境 → 安装依赖 → 生成 `.env` →（如缺 `dist/` 则自动构建前端）→ 启动服务 → 打开浏览器。对方只需装好 Python 3.10+，双击脚本即可，无需敲任何命令。
+
+> 环境自检：`start.bat --check` 只检查环境不启动服务（排查问题时好用）。
 
 然后浏览器访问 `http://localhost:8000/`。
 
