@@ -1,0 +1,24 @@
+# ============================================================
+# Render Blueprint（render.yaml）
+# 连接 GitHub 仓库 jiarou129/recall 后，在 Render 控制台
+# 「New + → Blueprint」选择本仓库即可自动创建服务。
+# 首次部署时需在 Service 环境变量里手动填写 DEEPSEEK_API_KEY。
+# ============================================================
+services:
+  - type: web
+    name: recall
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: DEEPSEEK_API_KEY
+        sync: false # 部署时手动填写（SiliconFlow / DeepSeek 的 API Key）
+      - key: DEEPSEEK_MODEL
+        value: deepseek-ai/DeepSeek-V3.2
+      - key: DEEPSEEK_BASE_URL
+        value: https://api.siliconflow.cn/v1
+    disk:
+      name: recall-data
+      mountPath: /app/data
+      sizeGB: 1

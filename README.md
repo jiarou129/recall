@@ -45,6 +45,7 @@ Recall 是一款面向学生（中学 / 大学 / 考研）的 AI 错题管理平
 | [`docs/PRD.md`](./docs/PRD.md) | 产品/决策 | 产品背景、用户画像、功能流程、需求规格 |
 | [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md) | 开发者 | 架构、API 契约、数据模型、关键模块设计、扩展指南 |
 | [`docs/TEST_REPORT.md`](./docs/TEST_REPORT.md) | 测试/质量 | 功能/非功能测试用例、真实质量门禁结果、缺陷与结论 |
+| [`docs/DEPLOY.md`](./docs/DEPLOY.md) | 运维/上云 | 完整云端部署指南（Render / 通用 Docker）、环境变量、数据持久化、多人共用说明 |
 
 ---
 

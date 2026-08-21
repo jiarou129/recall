@@ -61,12 +61,22 @@ CN_FONT = _register_chinese_font()
 
 
 def _find_browser() -> str | None:
-    """探测可用的 Chromium 内核浏览器（Edge/Chrome），用于 headless PDF 打印。"""
+    """探测可用的 Chromium 内核浏览器（Edge/Chrome），用于 headless PDF 打印。
+
+    同时覆盖 Windows（本机）与 Linux（云端 Docker：apt 安装 chromium）路径。
+    """
     candidates = [
+        # Windows
         r"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe",
         r"%ProgramFiles%\Microsoft\Edge\Application\msedge.exe",
         r"%ProgramFiles%\Google\Chrome\Application\chrome.exe",
         r"%LocalAppData%\Google\Chrome\Application\chrome.exe",
+        # Linux（Debian/Ubuntu 的 chromium 包）
+        "/usr/bin/chromium",
+        "/usr/bin/chromium-browser",
+        "/usr/bin/google-chrome",
+        "/usr/bin/google-chrome-stable",
+        "/opt/google/chrome/chrome",
     ]
     for pattern in candidates:
         path = os.path.expandvars(pattern)
