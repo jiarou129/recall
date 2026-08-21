@@ -27,6 +27,7 @@ __pycache__/
 .env
 .env.*
 !.env.example
+!.env.demo
 
 # ===== 用户数据（本地优先，不入库） =====
 backend/data/
