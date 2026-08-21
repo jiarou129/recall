@@ -8,11 +8,14 @@ import type {
   Mistake,
   Settings,
 } from '@/types'
+import { demoApi } from '@/demo/api'
+
+const IS_DEMO = import.meta.env.VITE_DEMO === 'true'
 
 const http = axios.create({ baseURL: '/api', timeout: 60000 })
 
-// ---------------- 错题 ----------------
-export const mistakesApi = {
+// ================= 真实实现（本地 / 生产构建使用） =================
+const realMistakesApi = {
   list: (params?: { category_id?: number; subject?: string; status?: string; q?: string }) =>
     http.get<Mistake[]>('/mistakes', { params }).then((r) => r.data),
   get: (id: number) => http.get<Mistake>(`/mistakes/${id}`).then((r) => r.data),
@@ -46,8 +49,7 @@ export const mistakesApi = {
     http.post<Mistake>(`/mistakes/${id}/snooze`, days ? { days } : undefined).then((r) => r.data),
 }
 
-// ---------------- 分类 ----------------
-export const categoriesApi = {
+const realCategoriesApi = {
   list: () => http.get<Category[]>('/mistakes/categories').then((r) => r.data),
   create: (data: { name: string; color: number }) =>
     http.post<Category>('/mistakes/categories', data).then((r) => r.data),
@@ -56,8 +58,7 @@ export const categoriesApi = {
   remove: (id: number) => http.delete(`/mistakes/categories/${id}`),
 }
 
-// ---------------- 对话 ----------------
-export const chatApi = {
+const realChatApi = {
   sessions: () => http.get<ChatSession[]>('/chat/sessions').then((r) => r.data),
   createSession: (title = '新对话') =>
     http.post<ChatSession>('/chat/sessions', null, { params: { title } }).then((r) => r.data),
@@ -68,22 +69,21 @@ export const chatApi = {
   remove: (sid: number) => http.delete(`/chat/sessions/${sid}`),
   // 根据题干生成 AI 解析（推理较慢且不稳定，超时放宽到 180s）
   solve: (question: string) =>
-    http.post<{ answer: string; available: boolean }>('/chat/solve', { question }, { timeout: 180000 }).then((r) => r.data),
+    http
+      .post<{ answer: string; available: boolean }>('/chat/solve', { question }, { timeout: 180000 })
+      .then((r) => r.data),
 }
 
-// ---------------- 看板 ----------------
-export const dashboardApi = {
+const realDashboardApi = {
   stats: () => http.get<DashboardStats>('/dashboard/stats').then((r) => r.data),
 }
 
-// ---------------- 设置 ----------------
-export const settingsApi = {
+const realSettingsApi = {
   get: () => http.get<Settings>('/settings').then((r) => r.data),
   update: (data: Settings) => http.put<Settings>('/settings', data).then((r) => r.data),
 }
 
-// ---------------- 上传 OCR ----------------
-export const uploadApi = {
+const realUploadApi = {
   ocr: async (file: File) => {
     const form = new FormData()
     form.append('file', file)
@@ -97,7 +97,15 @@ export const uploadApi = {
   },
 }
 
-// ---------------- 帮助 ----------------
-export const helpApi = {
+const realHelpApi = {
   doc: () => http.get<HelpDoc>('/help').then((r) => r.data),
 }
+
+// ================= 导出：demo / 真实 二选一 =================
+export const mistakesApi = IS_DEMO ? demoApi.mistakes : realMistakesApi
+export const categoriesApi = IS_DEMO ? demoApi.categories : realCategoriesApi
+export const chatApi = IS_DEMO ? demoApi.chat : realChatApi
+export const dashboardApi = IS_DEMO ? demoApi.dashboard : realDashboardApi
+export const settingsApi = IS_DEMO ? demoApi.settings : realSettingsApi
+export const uploadApi = IS_DEMO ? demoApi.upload : realUploadApi
+export const helpApi = IS_DEMO ? demoApi.help : realHelpApi
